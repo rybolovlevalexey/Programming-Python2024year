@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="First task done">
-      <change afterPath="$PROJECT_DIR$/shbr_contest.py" afterDir="false" />
+    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="Second task, first version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/first lesson.py" beforeDir="false" afterPath="$PROJECT_DIR$/first lesson.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shbr_contest.py" beforeDir="false" afterPath="$PROJECT_DIR$/shbr_contest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,14 +148,23 @@
       <option name="project" value="LOCAL" />
       <updated>1710055624611</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="First task done">
+      <option name="closed" value="true" />
+      <created>1710569167872</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710569167872</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Task B done" />
     <MESSAGE value="Task C done" />
     <MESSAGE value="First task done" />
-    <option name="LAST_COMMIT_MESSAGE" value="First task done" />
+    <MESSAGE value="Second task, first version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Second task, first version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
