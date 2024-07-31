@@ -23,8 +23,13 @@ class InfoRequest:
     search_url = "https://www.comtt.ru/search.php"
     # search_url_v2 = "https://www.comtt.ru/k/a/example/ws_search/search.php"
     search_url_v2 = "https://www.comtt.ru/k/t/t.php"
-    auth_data = {"username": "", "password": ""}
-    auth_data_v2 = {"login": "", "pass": ""}
+    with open("комтранс_авторизация.txt", "r") as auth_data_file:
+        username_omega = auth_data_file.readline().strip()
+        password_omega = auth_data_file.readline().strip()
+        auth_data = {"username": username_omega,
+                     "password": password_omega}
+        auth_data_v2 = {"login": username_omega,
+                        "pass": password_omega}
     user_agent = UserAgent().random
 
 
@@ -36,17 +41,23 @@ class MySession:
 
     def save_session(self):
         with open(self.session_file, 'wb') as file:
+            cookies_info = list({"domain": key.domain, "name": key.name,
+                                 "path": key.path, "value": key.value}
+                                for key in self.cur_session.cookies)
             pickle.dump({
-                'cookies': self.cur_session.cookies.get_dict(),
-                'headers': self.cur_session.headers,
+                "cookies": cookies_info,
+                "headers": self.cur_session.headers,
             }, file)
+        print("Выполнено сохранение информации о текущей сессии")
 
     def load_session_from_file(self):
         self.cur_session = requests.Session()
         with open(self.session_file, 'rb') as file:
             data = pickle.load(file)
-            self.cur_session.cookies.update(data['cookies'])
-            self.cur_session.headers.update(data['headers'])
+            for cook in data["cookies"]:
+                self.cur_session.cookies.set(**cook)
+            self.cur_session.headers.update(data["headers"])
+        print("Выполнена выгрузка информации о прошедшей сессии в текущую")
 
     def is_logged_in(self, check_session) -> bool:
         resp = check_session.get(InfoRequest.search_url,
@@ -69,29 +80,6 @@ class MySession:
         print(BeautifulSoup(cur_session_resp.content, "html.parser").prettify())
         print("Создана новая сессия и выполнена её авторизация")
 
-    def session_ready_without_files_v2(self):
-        self.cur_session = requests.Session()
-        print("Начата авторизация")
-        cur_session_resp = self.cur_session.post(InfoRequest.auth_url,
-                                                 data=InfoRequest.auth_data_v2,
-                                                 headers={"User-Agent": InfoRequest.user_agent})
-        if "ОМЕГА ТРАК ООО" in cur_session_resp.text:
-            print("Создана новая сессия и выполнена её авторизация")
-        else:
-            print("Создана новая сессия, но НЕ выполнена её авторизация")
-
-    def making_session_another_version(self, article: str):
-        self.cur_session = requests.Session()
-        print("Начато выполнение запроса одновременно с авторизацией")
-        cur_session_resp = self.cur_session.get(InfoRequest.search_url,
-                                                auth=HTTPBasicAuth(
-                                                    InfoRequest.auth_data["username"],
-                                                    InfoRequest.auth_data["password"]),
-                                                params={'fnd': article},
-                                                headers={"User-Agent": InfoRequest.user_agent})
-        print("Запрос выполнен одновременно с авторизацией")
-        print(BeautifulSoup(cur_session_resp.content, "html.parser").prettify())
-
     def session_ready_to_work(self):
         if self.cur_session is requests.Session and self.cur_session != requests.Session():
             if self.is_logged_in(self.cur_session):
@@ -111,10 +99,14 @@ class MySession:
             print("Из найденного файла о сессии получены актуальные данные")
             return True
 
-        cur_session_resp = self.cur_session.post(InfoRequest.auth_url, data=InfoRequest.auth_data)
+        cur_session_resp = self.cur_session.post(InfoRequest.auth_url, data=InfoRequest.auth_data_v2)
         if cur_session_resp.status_code == 200:
-            print("Создана новая актуальная сессия, и она сохранена в файл")
-            self.save_session()
+            if "ОМЕГА ТРАК ООО" in cur_session_resp.text:
+                print("Создана новая сессия и выполнена её авторизация")
+                self.save_session()
+                print("Информация об этой сессии перезаписана в файл")
+            else:
+                print("Создана новая сессия, но НЕ выполнена её авторизация")
             return True
         print("Создана новая сессия, но произошла ошибка при авторизации")
         return False
@@ -188,5 +180,4 @@ def main_selenium():
 
 if __name__ == "__main__":
     session = MySession()
-    session.session_ready_without_files_v2()
-    session.search_product_by_article("85696")
+    session.session_ready_to_work()

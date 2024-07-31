@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии">
+    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" afterDir="false" />
     </list>
@@ -269,7 +269,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722333843776</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium">
+      <option name="closed" value="true" />
+      <created>1722446886260</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1722446886261</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -280,7 +288,8 @@
     <MESSAGE value="first task done" />
     <MESSAGE value="kontur contest" />
     <MESSAGE value="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии" />
-    <option name="LAST_COMMIT_MESSAGE" value="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии" />
+    <MESSAGE value="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium" />
+    <option name="LAST_COMMIT_MESSAGE" value="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
