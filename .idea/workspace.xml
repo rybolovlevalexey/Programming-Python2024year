@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="kontur contest">
-      <change afterPath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yandex.py" afterDir="false" />
+    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,22 +33,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.B.executor": "Run",
-    "Python.C.executor": "Run",
-    "Python.first lesson.executor": "Run",
-    "Python.making_table_istinnosty.executor": "Run",
-    "Python.parsing.executor": "Run",
-    "Python.shbr_contest.executor": "Run",
-    "Python.using_postgre_bd.executor": "Run",
-    "Python.yandex.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.B.executor&quot;: &quot;Run&quot;,
+    &quot;Python.C.executor&quot;: &quot;Run&quot;,
+    &quot;Python.first lesson.executor&quot;: &quot;Run&quot;,
+    &quot;Python.making_table_istinnosty.executor&quot;: &quot;Run&quot;,
+    &quot;Python.parsing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.shbr_contest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.using_postgre_bd.executor&quot;: &quot;Run&quot;,
+    &quot;Python.yandex.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\rybol\PycharmProjects\Programming_2024\yandex_contests" />
@@ -262,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714893946788</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии">
+      <option name="closed" value="true" />
+      <created>1722333843775</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1722333843776</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -272,7 +279,8 @@
     <MESSAGE value="Second task, first version" />
     <MESSAGE value="first task done" />
     <MESSAGE value="kontur contest" />
-    <option name="LAST_COMMIT_MESSAGE" value="kontur contest" />
+    <MESSAGE value="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии" />
+    <option name="LAST_COMMIT_MESSAGE" value="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
