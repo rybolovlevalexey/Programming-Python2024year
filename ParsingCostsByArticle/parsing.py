@@ -33,6 +33,17 @@ class InfoRequest:
     user_agent = UserAgent().random
 
 
+def func_timer(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        func_result = func(*args, **kwargs)
+        end_time = time.time()
+        result_time = end_time - start_time
+        print(f"Время выполнения запроса {result_time:.4f} секунд")
+        return func_result
+    return wrapper
+
+
 class ParserComTrans:
     session_file = 'session.pkl'
 
@@ -134,62 +145,79 @@ class ParserComTrans:
         # print(soup.find_all("tbody")[1])
         print(search_response.content)
 
+    @staticmethod
+    def save_selenium_session(driver):
+        cookies = driver.get_cookies()
+        print(cookies)
+        with open("selenium_session.pkl", "wb") as file:
+            pickle.dump(cookies, file)
 
-def func_timer(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        func_result = func(*args, **kwargs)
-        end_time = time.time()
-        result_time = end_time - start_time
-        print(f"Время выполнения запроса {result_time:.4f} секунд")
-        return func_result
-    return wrapper
+    @staticmethod
+    def load_selenium_session(driver):
+        driver.delete_all_cookies()
+        with open("selenium_session.pkl", "rb") as file:
+            cookies = pickle.load(file)
+            for cookie in cookies:
+                driver.add_cookie(cookie)
+        return driver
 
-
-@func_timer
-def main_selenium(article: str):
-    chrome_options = Options()
-    chrome_options.add_argument(
-        "--headless")  # Запуск браузера в фоновом режиме (без графического интерфейса)
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-
-    print("До блока try нет никаких ошибок")
-
-    try:
-        # Открытие страницы авторизации
-        driver.get(InfoRequest.auth_url)
-        print("страница открыта успешно")
-
+    @staticmethod
+    def selenium_auth(driver):
         # Поиск и заполнение полей для ввода логина и пароля
-        username_field = driver.find_element(By.NAME, 'login')
-        password_field = driver.find_element(By.NAME, 'pass')
+        username_field = driver.find_element(By.NAME, "login")
+        password_field = driver.find_element(By.NAME, "pass")
         print("найдены поля логин и пароль")
         username_field.send_keys(InfoRequest.auth_data["username"])
         password_field.send_keys(InfoRequest.auth_data["password"])
         password_field.send_keys(Keys.RETURN)
         print("введены данные и нажат enter")
 
-        # Ожидание загрузки страницы после авторизации
-        time.sleep(3)
-        print("страница загружена")
+        return driver
+
+    @func_timer
+    def parsing_article(self, article: str):
+        chrome_options = Options()
+        chrome_options.add_argument(
+            "--headless")  # Запуск браузера в фоновом режиме (без графического интерфейса)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver.implicitly_wait(10)
+        print("До блока try нет никаких ошибок")
+
+        # Открытие страницы авторизации
+        driver.get(InfoRequest.auth_url)
+        print("страница авторизации открыта успешно")
+
+        if os.path.exists("selenium_session.pkl"):
+            driver = self.load_selenium_session(driver)
+            print("В драйвер сохранена информация об актуальной сессии")
+        else:
+            driver = self.selenium_auth(driver)
+            self.save_selenium_session(driver)
+            print("Информация о сессии сохранена в файл")
 
         # Переход к защищенной странице
         driver.get(InfoRequest.search_url + f"?fnd={article}")
         print("выполнение поиска по артикулу")
 
-        # Ожидание загрузки защищенной страницы
-        time.sleep(3)
-        print("страница загружена")
-
         # Парсинг содержимого защищенной страницы
         print("начат парсинг")
+        if (driver.find_element(By.XPATH, "//font[@color='red']") and
+                "Внимание! Вы не авторизованы!" in
+                driver.find_element(By.XPATH, "//font[@color='red']").text.strip()):
+            print("Текущая сессия не зарегистрирована")
+            driver = self.selenium_auth(driver)
+            driver.get(InfoRequest.search_url + f"?fnd={article}")
+            print("выполнение поиска по артикулу после повторной регистрации")
+            self.save_selenium_session(driver)
+            print("обновление информации о сессии")
+
         content = driver.find_element(By.TAG_NAME, 'body')
         tag_name = "tbody"
         class_name = "sort"
-        # print(len(content.find_elements(By.CSS_SELECTOR, f"{tag_name}.{class_name}")))
         info_by_article = list()
-        for line in content.find_element(By.CSS_SELECTOR, f"{tag_name}.{class_name}").find_elements(
+        for line in content.find_element(By.CSS_SELECTOR,
+                                         f"{tag_name}.{class_name}").find_elements(
                 By.TAG_NAME, "tr"):
             info_by_article.append([line.find_elements(By.TAG_NAME, "td")[1].text.strip(),
                                     line.find_elements(By.TAG_NAME, "td")[2].text.strip(),
@@ -202,12 +230,68 @@ def main_selenium(article: str):
         print(f"Самая низкая цена - {info_by_article[0][2]} \n"
               f"самая высокая цена - {info_by_article[-1][2]}")
 
-    finally:
-        # Закрытие WebDriver
-        driver.quit()
+    @func_timer
+    def parsing_list_articles(self, articles: list[str]):
+        if len(articles) == 0:
+            return False
+
+        chrome_options = Options()
+        chrome_options.add_argument(
+            "--headless")  # Запуск браузера в фоновом режиме (без графического интерфейса)
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        driver.implicitly_wait(10)
+        print("До блока try нет никаких ошибок")
+
+        # Открытие страницы авторизации
+        driver.get(InfoRequest.auth_url)
+        print("страница авторизации открыта успешно")
+
+        if os.path.exists("selenium_session.pkl"):
+            driver = self.load_selenium_session(driver)
+            print("В драйвер сохранена информация об актуальной сессии")
+        else:
+            driver = self.selenium_auth(driver)
+            self.save_selenium_session(driver)
+            print("Информация о сессии сохранена в файл")
+
+        for i in range(len(articles)):
+            # Переход к защищенной странице
+            driver.get(InfoRequest.search_url + f"?fnd={articles[i]}")
+            print("выполнение поиска по артикулу")
+
+            # Проверка - авторизована ли текущая сессия
+            if (i == 0 and driver.find_element(By.XPATH, "//font[@color='red']") and
+                    "Внимание! Вы не авторизованы!" in
+                    driver.find_element(By.XPATH, "//font[@color='red']").text.strip()):
+                print("Текущая сессия не зарегистрирована")
+                driver = self.selenium_auth(driver)
+                driver.get(InfoRequest.search_url + f"?fnd={articles[i]}")
+                print("выполнение поиска по артикулу после повторной регистрации")
+                self.save_selenium_session(driver)
+                print("обновление информации о сессии")
+
+            # Парсинг содержимого защищенной страницы
+            print("начат парсинг")
+            content = driver.find_element(By.TAG_NAME, 'body')
+            tag_name = "tbody"
+            class_name = "sort"
+            info_by_article = list()
+            for line in content.find_element(By.CSS_SELECTOR,
+                                             f"{tag_name}.{class_name}").find_elements(
+                By.TAG_NAME, "tr"):
+                info_by_article.append([line.find_elements(By.TAG_NAME, "td")[1].text.strip(),
+                                        line.find_elements(By.TAG_NAME, "td")[2].text.strip(),
+                                        line.find_elements(By.TAG_NAME, "td")[6].text.strip()])
+            print(f"Кол-во товаров найденных по артикулу {len(info_by_article)}")
+            info_by_article = list(filter(lambda info_part: info_part[0] == articles[i], info_by_article))
+            print(f"Кол-во товаров с точным соответствием артикула {len(info_by_article)}")
+            info_by_article = sorted(info_by_article, key=lambda info_part: info_part[2])
+            pprint(info_by_article)
+            print(f"Самая низкая цена - {info_by_article[0][2]} \n"
+                  f"самая высокая цена - {info_by_article[-1][2]}")
 
 
 if __name__ == "__main__":
-    # parser = ParserComTrans()
-    # parser.session_ready_to_work()
-    main_selenium("85696")
+    parser = ParserComTrans()
+    parser.parsing_article("85696")
