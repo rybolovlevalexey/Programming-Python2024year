@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="добавлен файл requirements.txt">
+    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="реализовано сохранение и восстановление информации об авторизованной сессии, а также начата работа по обработке нескольких артикулов">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" afterDir="false" />
     </list>
@@ -33,22 +33,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.B.executor": "Run",
-    "Python.C.executor": "Run",
-    "Python.first lesson.executor": "Run",
-    "Python.making_table_istinnosty.executor": "Run",
-    "Python.parsing.executor": "Run",
-    "Python.shbr_contest.executor": "Run",
-    "Python.using_postgre_bd.executor": "Run",
-    "Python.yandex.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "inlay.hints"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.B.executor&quot;: &quot;Run&quot;,
+    &quot;Python.C.executor&quot;: &quot;Run&quot;,
+    &quot;Python.first lesson.executor&quot;: &quot;Run&quot;,
+    &quot;Python.making_table_istinnosty.executor&quot;: &quot;Run&quot;,
+    &quot;Python.parsing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.shbr_contest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.using_postgre_bd.executor&quot;: &quot;Run&quot;,
+    &quot;Python.yandex.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\rybol\PycharmProjects\Programming_2024\yandex_contests" />
@@ -301,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722495675281</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="реализовано сохранение и восстановление информации об авторизованной сессии, а также начата работа по обработке нескольких артикулов">
+      <option name="closed" value="true" />
+      <created>1722506203431</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1722506203431</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -316,7 +324,8 @@
     <MESSAGE value="исправлены авторизация, а также сохранение и восстановление предыдущей сессии" />
     <MESSAGE value="реализован парсинг сайта с помощью selenium, фильтрация и поиск необходимых данных, а также замер времени выполнения" />
     <MESSAGE value="добавлен файл requirements.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавлен файл requirements.txt" />
+    <MESSAGE value="реализовано сохранение и восстановление информации об авторизованной сессии, а также начата работа по обработке нескольких артикулов" />
+    <option name="LAST_COMMIT_MESSAGE" value="реализовано сохранение и восстановление информации об авторизованной сессии, а также начата работа по обработке нескольких артикулов" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

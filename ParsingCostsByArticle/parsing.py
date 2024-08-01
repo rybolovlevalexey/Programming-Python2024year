@@ -212,6 +212,11 @@ class ParserComTrans:
             self.save_selenium_session(driver)
             print("обновление информации о сессии")
 
+        # сохранение в html файл ответа для дальнейших проверок
+        html_source = driver.page_source
+        with open('page.html', 'w', encoding='utf-8') as file:
+            file.write(html_source)
+
         content = driver.find_element(By.TAG_NAME, 'body')
         tag_name = "tbody"
         class_name = "sort"
@@ -227,13 +232,17 @@ class ParserComTrans:
         print(f"Кол-во товаров с точным соответствием артикула {len(info_by_article)}")
         info_by_article = sorted(info_by_article, key=lambda info_part: info_part[2])
         pprint(info_by_article)
-        print(f"Самая низкая цена - {info_by_article[0][2]} \n"
-              f"самая высокая цена - {info_by_article[-1][2]}")
+        if len(info_by_article) > 0:
+            print(f"Самая низкая цена - {info_by_article[0][2]} \n"
+                  f"самая высокая цена - {info_by_article[-1][2]}")
+        else:
+            print("Информации по данному артикулу не найдено")
 
     @func_timer
     def parsing_list_articles(self, articles: list[str]):
         if len(articles) == 0:
             return False
+        result_answer: dict[str: list[str]] = dict()
 
         chrome_options = Options()
         chrome_options.add_argument(
@@ -284,14 +293,26 @@ class ParserComTrans:
                                         line.find_elements(By.TAG_NAME, "td")[2].text.strip(),
                                         line.find_elements(By.TAG_NAME, "td")[6].text.strip()])
             print(f"Кол-во товаров найденных по артикулу {len(info_by_article)}")
-            info_by_article = list(filter(lambda info_part: info_part[0] == articles[i], info_by_article))
+            info_by_article = list(filter(
+                lambda info_part: info_part[0] == articles[i], info_by_article))
             print(f"Кол-во товаров с точным соответствием артикула {len(info_by_article)}")
             info_by_article = sorted(info_by_article, key=lambda info_part: info_part[2])
             pprint(info_by_article)
-            print(f"Самая низкая цена - {info_by_article[0][2]} \n"
-                  f"самая высокая цена - {info_by_article[-1][2]}")
+            if len(info_by_article) > 0:
+                print(f"Самая низкая цена - {info_by_article[0][2]} \n"
+                      f"самая высокая цена - {info_by_article[-1][2]}")
+            if len(info_by_article) == 0:
+                result_answer[articles[i]] = None
+            elif len(info_by_article) == 1:
+                result_answer[articles[i]] = list(info_by_article[0][2])
+            else:
+                result_answer[articles[i]] = [info_by_article[0][2], info_by_article[-1][2]]
+        return result_answer
 
 
 if __name__ == "__main__":
     parser = ParserComTrans()
     parser.parsing_article("85696")
+    # parser.parsing_article("003310")
+    # print("----------")
+    # print(parser.parsing_list_articles(["003310", "00893270050", "0101057"]))
