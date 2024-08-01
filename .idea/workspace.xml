@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium">
+    <list default="true" id="b7ec0d37-dca6-441b-91d1-fafeadfa4bf8" name="Changes" comment="исправлены авторизация, а также сохранение и восстановление предыдущей сессии">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/ParsingCostsByArticle/parsing.py" afterDir="false" />
     </list>
@@ -277,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722446886261</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="исправлены авторизация, а также сохранение и восстановление предыдущей сессии">
+      <option name="closed" value="true" />
+      <created>1722448216941</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1722448216941</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -289,7 +297,8 @@
     <MESSAGE value="kontur contest" />
     <MESSAGE value="реализовано создание новой сессии, авторизация, сериализация и десериализация текущей сессии" />
     <MESSAGE value="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium" />
-    <option name="LAST_COMMIT_MESSAGE" value="исправлены проблемы с авторизацией, доработан процесс сбора информации по артикулу, а также сделан макет под selenium" />
+    <MESSAGE value="исправлены авторизация, а также сохранение и восстановление предыдущей сессии" />
+    <option name="LAST_COMMIT_MESSAGE" value="исправлены авторизация, а также сохранение и восстановление предыдущей сессии" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

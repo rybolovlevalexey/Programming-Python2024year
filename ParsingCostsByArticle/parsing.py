@@ -33,7 +33,7 @@ class InfoRequest:
     user_agent = UserAgent().random
 
 
-class MySession:
+class ParserComTrans:
     session_file = 'session.pkl'
 
     def __init__(self):
@@ -59,7 +59,8 @@ class MySession:
             self.cur_session.headers.update(data["headers"])
         print("Выполнена выгрузка информации о прошедшей сессии в текущую")
 
-    def is_logged_in(self, check_session) -> bool:
+    @staticmethod
+    def is_logged_in(check_session) -> bool:
         resp = check_session.get(InfoRequest.search_url,
                                  headers={"User-Agent": InfoRequest.user_agent})
         soup = BeautifulSoup(resp.content, "html.parser")
@@ -75,7 +76,7 @@ class MySession:
         self.cur_session = requests.Session()
         print("Начата авторизация")
         cur_session_resp = self.cur_session.post(InfoRequest.auth_url,
-                                                 data=InfoRequest.auth_data,
+                                                 data=InfoRequest.auth_data_v2,
                                                  headers={"User-Agent": InfoRequest.user_agent})
         print(BeautifulSoup(cur_session_resp.content, "html.parser").prettify())
         print("Создана новая сессия и выполнена её авторизация")
@@ -99,7 +100,8 @@ class MySession:
             print("Из найденного файла о сессии получены актуальные данные")
             return True
 
-        cur_session_resp = self.cur_session.post(InfoRequest.auth_url, data=InfoRequest.auth_data_v2)
+        cur_session_resp = self.cur_session.post(InfoRequest.auth_url,
+                                                 data=InfoRequest.auth_data_v2)
         if cur_session_resp.status_code == 200:
             if "ОМЕГА ТРАК ООО" in cur_session_resp.text:
                 print("Создана новая сессия и выполнена её авторизация")
@@ -133,7 +135,19 @@ class MySession:
         print(search_response.content)
 
 
-def main_selenium():
+def func_timer(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        func_result = func(*args, **kwargs)
+        end_time = time.time()
+        result_time = end_time - start_time
+        print(f"Время выполнения запроса {result_time:.4f} секунд")
+        return func_result
+    return wrapper
+
+
+@func_timer
+def main_selenium(article: str):
     chrome_options = Options()
     chrome_options.add_argument(
         "--headless")  # Запуск браузера в фоновом режиме (без графического интерфейса)
@@ -161,7 +175,7 @@ def main_selenium():
         print("страница загружена")
 
         # Переход к защищенной странице
-        driver.get(InfoRequest.search_url + "?fnd=85696")
+        driver.get(InfoRequest.search_url + f"?fnd={article}")
         print("выполнение поиска по артикулу")
 
         # Ожидание загрузки защищенной страницы
@@ -169,9 +183,24 @@ def main_selenium():
         print("страница загружена")
 
         # Парсинг содержимого защищенной страницы
-        content = driver.find_element(By.CLASS_NAME, 'content')
-        print("парсинг")
-        print(content.text)
+        print("начат парсинг")
+        content = driver.find_element(By.TAG_NAME, 'body')
+        tag_name = "tbody"
+        class_name = "sort"
+        # print(len(content.find_elements(By.CSS_SELECTOR, f"{tag_name}.{class_name}")))
+        info_by_article = list()
+        for line in content.find_element(By.CSS_SELECTOR, f"{tag_name}.{class_name}").find_elements(
+                By.TAG_NAME, "tr"):
+            info_by_article.append([line.find_elements(By.TAG_NAME, "td")[1].text.strip(),
+                                    line.find_elements(By.TAG_NAME, "td")[2].text.strip(),
+                                    line.find_elements(By.TAG_NAME, "td")[6].text.strip()])
+        print(f"Кол-во товаров найденных по артикулу {len(info_by_article)}")
+        info_by_article = list(filter(lambda info_part: info_part[0] == article, info_by_article))
+        print(f"Кол-во товаров с точным соответствием артикула {len(info_by_article)}")
+        info_by_article = sorted(info_by_article, key=lambda info_part: info_part[2])
+        pprint(info_by_article)
+        print(f"Самая низкая цена - {info_by_article[0][2]} \n"
+              f"самая высокая цена - {info_by_article[-1][2]}")
 
     finally:
         # Закрытие WebDriver
@@ -179,5 +208,6 @@ def main_selenium():
 
 
 if __name__ == "__main__":
-    session = MySession()
-    session.session_ready_to_work()
+    # parser = ParserComTrans()
+    # parser.session_ready_to_work()
+    main_selenium("85696")
